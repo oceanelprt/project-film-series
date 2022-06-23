@@ -1,20 +1,41 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Blank
+      Liste de films et de séries à voir
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
-  </div>
+  <ion-list>
+    <ion-item>
+     <ion-input [(ngModel)]="nomFilm" placeholder="Rechecher un film..."></ion-input>
+    </ion-item>
+    
+     <ion-button 
+      size="large"
+      expand="block"
+      color="success" 
+      (click)="onRecherche()">
+      <ion-icon name="search-circle-outline"></ion-icon>
+     </ion-button>
+    
+    
+  </ion-list>
+
+  <ion-list *ngFor="let film of films; let i = index" style="display: inline-block;">
+    <ion-card>
+
+      <ion-card-title>{{ film.nom }}</ion-card-title>
+      {{ film.annee }}
+     
+      
+      <ion-item>
+        <ion-img [src]="film.affiche"></ion-img>
+      </ion-item>
+    </ion-card>  
+  </ion-list>
+
+
 </ion-content>
