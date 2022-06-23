@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
-import { Film } from '../models/Films';
 
 @Component({
   selector: 'app-home',
@@ -9,27 +8,51 @@ import { Film } from '../models/Films';
 })
 export class HomePage {
   
-  nomFilm = "";
-  films:Film[]=[];
-  nbMaxFilms:number = 10;
+  nomFilm: string = "";
+  films: any[] = [];
+  nbMaxFilms: number = 10;
+
+  keyFavoris = 'mesFavoris';
+  favoris: any[] = [];
 
   // http
-  constructor(private http:HttpClient) {}
+  constructor(private http: HttpClient) {}
 
-  onRecherche(){
+  onRecherche(): void {
     let val = this.nomFilm;
+    // préparation de l'url pour chercher les films sur l'API
     let url ='http://www.omdbapi.com/?apikey=efdc2275&s='+val;
+
+    // remise à 0 des films
     this.films=[];
-    console.log(url);
     
+    // appel API
     this.http.get<any>(url).subscribe(
       (film)=> { // JSON
-        console.log(film)
-        for (let i = 0; i < 10; i++) {
-          let newFilm = new Film(film.Search[i].Title, film.Search[i].Year, film.Search[i].Poster);
-          this.films.push(newFilm);
-        }
+        // Récupération des films dans le tableau films
+       
+        this.films = film['Search'];
       }
     );
+  }
+
+  onAjoutFavoris(indiceFilm: number): void {
+    this.favoris.push(this.films[indiceFilm]);
+
+    // suppression des doublons
+    this.favoris = this.favoris.filter((value, index) => this.favoris.indexOf(value) === index)
+
+    // envoyer les favoris sur le localstorage
+    localStorage.setItem(this.keyFavoris, JSON.stringify(this.favoris));
+  } 
+
+  onAfficheFavoris(): void {
+    // remise à 0 des films affichés
+    this.films = [];
+    
+    // récupérer les favoris sur le localstorage
+    this.favoris = <any[]> JSON.parse(localStorage.getItem(this.keyFavoris))
+    this.films = this.favoris;
+    console.log(this.favoris);
   }
 }

@@ -1,8 +1,25 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>
-      Liste de films et de séries à voir
-    </ion-title>
+
+    <ion-grid>
+      <ion-row class="ion-align-items-center">
+        <ion-col size="12" class="ion-text-center">
+          <ion-title class="ion-text-center">
+            Liste de films et de séries à voir
+          </ion-title>
+          
+        </ion-col>
+        <ion-col size="12" class="ion-text-right">
+          <ion-button color="success" class="ion-text-center" (click)="onAfficheFavoris()">
+            <ion-icon name="heart-circle-outline"></ion-icon>
+             Mes favoris
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    
+    
+    
   </ion-toolbar>
 </ion-header>
 
@@ -20,20 +37,24 @@
       (click)="onRecherche()">
       <ion-icon name="search-circle-outline"></ion-icon>
      </ion-button>
-    
-    
   </ion-list>
 
   <ion-list *ngFor="let film of films; let i = index" style="display: inline-block;">
     <ion-card>
 
-      <ion-card-title>{{ film.nom }}</ion-card-title>
-      {{ film.annee }}
-     
+      <ion-card-title>{{ film.Title }}</ion-card-title>
+      {{ film.Year }}
       
       <ion-item>
-        <ion-img [src]="film.affiche"></ion-img>
+        <ion-img [src]="film.Poster"></ion-img>
       </ion-item>
+      <ion-button 
+        size="large"
+        expand="block"
+        color="danger" 
+        (click)="onAjoutFavoris(i)">
+        <ion-icon name="heart-outline"></ion-icon>
+      </ion-button>
     </ion-card>  
   </ion-list>
 
