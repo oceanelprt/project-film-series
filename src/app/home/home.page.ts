@@ -43,7 +43,7 @@ export class HomePage {
   private filmsFavoris(films: any[], filmsFavoris: any[]): any[] {
     for (let f of films) {
           
-      //s'il n'y a des films en favori
+      //s'il y a des films en favori
       if (filmsFavoris.length != 0) {
         
         for (let favoris of filmsFavoris) {
@@ -63,14 +63,12 @@ export class HomePage {
   }
 
   onAjoutFavoris(indiceFilm: number): void {
-    let filmFavoris = this.films[indiceFilm];
-    filmFavoris['favoris'] = true;
+    this.films[indiceFilm]['favoris'] = true;
 
-    this.favoris.push(filmFavoris);
+    this.favoris.push(this.films[indiceFilm]);
 
     // suppression des doublons
     this.favoris = this.favoris.filter((value, index) => this.favoris.indexOf(value) === index)
-    
 
     // envoyer les favoris sur le localstorage
     localStorage.setItem(this.keyFavoris, JSON.stringify(this.favoris));
@@ -78,8 +76,6 @@ export class HomePage {
 
   onAfficheFavoris(): void {
     this.mesFavorisAffiches = true;
-    // remise à 0 des films affichés
-    this.films = [];
 
     // récupérer les favoris sur le localstorage
     this.favoris = <any[]> JSON.parse(localStorage.getItem(this.keyFavoris));
