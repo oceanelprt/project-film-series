@@ -10,7 +10,6 @@ export class HomePage {
   
   nomFilm: string = "";
   films: any[] = [];
-  nbMaxFilms: number = 10;
 
   mesFavorisAffiches = false;
 
@@ -35,21 +34,33 @@ export class HomePage {
         // Récupération des films dans le tableau films
         let films = film.Search;   
         let filmsFavoris = <any[]> JSON.parse(localStorage.getItem(this.keyFavoris));
+
         
-
-        for (let f of films) {
-          f['favoris'] = false;
-          if (filmsFavoris != null) {
-            for (let favoris of filmsFavoris) {
-              f['favoris'] = favoris['imdbID'] == f['imdbID'] ? true : false;
-            }
-          }
-          
-        }
-
-        this.films = films
+        this.films = this.filmsFavoris(films, filmsFavoris);
       }
     );
+  }
+
+  private filmsFavoris(films: any[], filmsFavoris: any[]): any[] {
+    for (let f of films) {
+          
+      //s'il n'y a des films en favori
+      if (filmsFavoris.length != 0) {
+        
+        for (let favoris of filmsFavoris) {
+          if (favoris['imdbID'] == f['imdbID']) {
+            f['favoris'] = true;
+            break;
+          } else {
+            f['favoris'] = false;
+          }
+        }
+      } else {
+        f['favoris'] = false;
+      } 
+    }
+
+    return films;
   }
 
   onAjoutFavoris(indiceFilm: number): void {
@@ -74,6 +85,7 @@ export class HomePage {
 
     // récupérer les favoris sur le localstorage
     this.favoris = <any[]> JSON.parse(localStorage.getItem(this.keyFavoris));
+
     this.films = this.favoris;
   }
 
@@ -86,5 +98,9 @@ export class HomePage {
 
     // envoyer les favoris sur le localstorage
     localStorage.setItem(this.keyFavoris, JSON.stringify(this.favoris))
+
+    if (this.films[indiceFilm]) {
+      this.films[indiceFilm]['favoris'] = false;
+    }
   }
 }
