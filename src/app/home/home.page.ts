@@ -35,7 +35,6 @@ export class HomePage {
         let films = film.Search;   
         let filmsFavoris = <any[]> JSON.parse(localStorage.getItem(this.keyFavoris));
 
-        
         this.films = this.filmsFavoris(films, filmsFavoris);
       }
     );
@@ -64,8 +63,6 @@ export class HomePage {
   }
 
   onAjoutFavoris(indiceFilm: number): void {
-    this.mesFavorisAffiches = true;
-
     let filmFavoris = this.films[indiceFilm];
     filmFavoris['favoris'] = true;
 
@@ -73,6 +70,7 @@ export class HomePage {
 
     // suppression des doublons
     this.favoris = this.favoris.filter((value, index) => this.favoris.indexOf(value) === index)
+    
 
     // envoyer les favoris sur le localstorage
     localStorage.setItem(this.keyFavoris, JSON.stringify(this.favoris));
@@ -98,8 +96,8 @@ export class HomePage {
 
     // envoyer les favoris sur le localstorage
     localStorage.setItem(this.keyFavoris, JSON.stringify(this.favoris))
-
-    if (this.films[indiceFilm]) {
+    
+    if (this.mesFavorisAffiches == false) {
       this.films[indiceFilm]['favoris'] = false;
     }
   }
